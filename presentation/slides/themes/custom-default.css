@@ -1,0 +1,111 @@
+/* custom-default.css */
+/* @theme custom-default */
+
+@import "default";
+
+section {
+  background-color: #fff;
+  position: relative;
+}
+
+h1,
+h2 {
+  color: #2e6ce6;
+}
+
+section.cover h1,
+section.demo h1,
+section.section h1 {
+  font-size: 3.5em;
+}
+
+section.cover h2,
+section.section h2 {
+  font-size: 2.5em;
+}
+
+section.section h1,
+section.section h2 {
+  margin: 0.2em 0;
+}
+
+section.ending h2 {
+  font-size: 2em;
+}
+section.ending h3 {
+  font-size: 1.75em;
+}
+
+section.demo,
+section.section {
+  text-align: center;
+}
+
+.arch-diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2em;
+  margin-top: 1em;
+  flex-wrap: wrap;
+}
+.arch-node {
+  border: 3px solid #2e6ce6;
+  border-radius: 12px;
+  padding: 0.8em 1.2em;
+  min-width: 140px;
+  text-align: center;
+  background: #f4f8ff;
+  font-weight: 600;
+}
+.arch-node .fa,
+.arch-node .fas,
+.arch-node .fab {
+  display: block;
+  font-size: 2em;
+  color: #2e6ce6;
+  margin-bottom: 0.2em;
+}
+.arch-arrow {
+  font-size: 2em;
+  color: #2e6ce6;
+  font-weight: 700;
+}
+.arch-pod {
+  margin-top: 1em;
+  border: 3px dashed #2e6ce6;
+  border-radius: 12px;
+  padding: 0.6em 1.2em;
+  text-align: center;
+  background: #fff;
+  font-weight: 600;
+}
+.cover-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5em;
+  margin: 0.6em 0;
+  font-size: 2.5em;
+  color: #2e6ce6;
+}
+section.plugins :not(h1, h2, h3, h4) {
+  font-size: 25px;
+}
+section.plugins-ts :not(h2) {
+  font-size: 20px;
+}
+
+section.columns2 {
+  display: block;
+  columns: 2;
+}
+section.columns3 {
+  display: block;
+  columns: 3;
+}
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+
+@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css";
