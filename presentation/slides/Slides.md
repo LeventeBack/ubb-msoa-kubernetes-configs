@@ -291,6 +291,37 @@ spec:
 
 ---
 
+# ConfigMap vs Secret — mikor mit?
+
+| Adat típusa                    | ConfigMap | Secret |
+| ------------------------------ | --------- | ------ |
+| Log szint, feature flag        | ✅        | ❌     |
+| API endpoint URL               | ✅        | ❌     |
+| Környezet neve (dev/prod)      | ✅        | ❌     |
+| Adatbázis jelszó               | ❌        | ✅     |
+| API kulcs (Stripe, SendGrid)   | ❌        | ✅     |
+| TLS tanúsítvány + privát kulcs | ❌        | ✅     |
+| Docker registry hitelesítés    | ❌        | ✅     |
+| OAuth client secret            | ❌        | ✅     |
+
+---
+
+# Valós életbeli példák
+
+### Mit tárolunk Secret-ben a gyakorlatban?
+
+- **Adatbázis hitelesítés** — PostgreSQL / MySQL / MongoDB jelszó, connection string
+- **Külső API kulcsok** — Stripe fizetési kulcs, SendGrid e-mail API token, Twilio SID
+- **TLS tanúsítvány** — HTTPS-hez szükséges cert + privát kulcs (`kubernetes.io/tls`)
+- **Image pull secret** — privát Docker / GitHub Container Registry hitelesítés
+- **JWT aláíró kulcs** — token generáláshoz / validáláshoz használt titkos kulcs
+- **OAuth client secret** — Google, GitHub, Microsoft SSO integráció
+- **SSH privát kulcs** — Git műveletek, szerver hozzáférés automation esetén
+
+> Mindezek közös tulajdonsága: **kiszivárgásuk közvetlen biztonsági kockázatot jelent.**
+
+---
+
 # Előnyök / Hátrányok
 
 <!-- _class: columns2 -->
