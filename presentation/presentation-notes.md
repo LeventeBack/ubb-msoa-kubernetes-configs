@@ -232,9 +232,3 @@
 - Sealed Secrets: másik világ - encrypted Secret Git-ben, nem külső tárral.
 
 ## Slide: DEMO 3
-
-- A wow-pillanat: Vault-ban módosítunk egy értéket → 15 mp múlva a podos log-ban megjelenik az új érték, **restart nélkül**.
-- Két terminál szükséges:
-  - 1. terminál: `kubectl logs -l app=demo-app -f`
-  - 2. terminál: `kubectl exec ... vault kv put ...`
-- Ha jut idő: a Vault UI is bemutatható (`port-forward 8200`).
