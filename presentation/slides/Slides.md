@@ -679,15 +679,15 @@ spec:
 
 # A három megoldás összevetése
 
-| Szempont          | ConfigMap | Secret           | ESO + Vault |
-| ----------------- | --------- | ---------------- | ----------- |
-| **Érzékeny adat** | ❌        | Részben (base64) | ✅          |
-| **Titkosítás**    | ❌        | Részben (etcd)   | ✅          |
-| **Audit log**     | ❌        | ❌               | ✅          |
-| **Rotáció**       | manuális  | manuális         | ✅          |
-| **GitOps-barát**  | ✅        | ❌               | ✅          |
-| **Komplexitás**   | alacsony  | alacsony         | közepes     |
-| **Multi-cluster** | ❌        | ❌               | ✅          |
+| Szempont           | ConfigMap | Secret           | ESO + Vault |
+| ------------------ | --------- | ---------------- | ----------- |
+| **Érzékeny adat**  | ❌        | Részben (base64) | ✅          |
+| **Titkosítás**     | ❌        | Részben (etcd)   | ✅          |
+| **Audit log**      | ❌        | ❌               | ✅          |
+| **Rotáció**        | manuális  | manuális         | ✅          |
+| **Verzió kezelés** | ✅        | ❌               | ✅          |
+| **Komplexitás**    | alacsony  | alacsony         | közepes     |
+| **Multi-cluster**  | ❌        | ❌               | ✅          |
 
 ---
 
