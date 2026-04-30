@@ -166,17 +166,17 @@
 
 # 3. rész: External Secrets Operator + Vault
 
-## Slide: Miért nem elég a natív Secret?
-
-- A 2. szekció vége természetes átvezetés - itt jön a 6 hiányosság listája.
-- Fontossági sorrend: nincs titkosítás → nincs audit → nincs rotáció.
-- Ez **éles környezetre** vonatkozik - dev-ben a natív Secret tökéletesen elég.
-
 ## Slide: Mi az a külső secret manager?
 
 - Egy dedikált, központi rendszer titkos adatok tárolására, hozzáférés-vezérlésére, naplózására és rotációjára.
 - Cloud provider felé: AWS-en valószínűleg Secrets Manager, multi-cloud esetén Vault.
 - A demónkban Vault szerepel, de az integrációs logika mindegyiknél ugyanaz.
+
+## Felhasználási esetek
+
+- A dinamikus credentialek pont érdekes: a Vault tud időre szóló, automatikusan lejáró DB usereket generálni.
+- Hátrányok oldalon: lokális dev-re overkill, nincs értelme.
+- Üzleti döntés: van-e csapat, aki üzemelteti? - A Vault nem self-running.
 
 ## Slide: Két különálló réteg
 
@@ -189,26 +189,6 @@
 - Két fő CRD: `SecretStore` (kapcsolat a tárhoz) és `ExternalSecret` (mit, honnan, hova szinkronizálni).
 - Transzparencia: a pod nem tud Vault-ról, csak egy sima K8s Secret-et lát.
 
-## Slide: Architektúra
-
-- A diagram végigköveti a folyamatot:
-  1. Vault-ban él a titok titkosítva.
-  2. Az ESO az API-n át lekéri.
-  3. K8s Secret-et hoz létre vagy frissít belőle.
-  4. A pod ezt a Secret-et mountolja.
-- A pod nem tud Vault-ról - ez biztonsági érv is, mert a hibafelület kisebb.
-
-## Slide: Előnyök / Hátrányok
-
-- A dinamikus credentialek pont érdekes: a Vault tud időre szóló, automatikusan lejáró DB usereket generálni.
-- Hátrányok oldalon: lokális dev-re overkill, nincs értelme.
-- Üzleti döntés: van-e csapat, aki üzemelteti? - A Vault nem self-running.
-
-## Slide: Hogyan működik belül?
-
-- A reconciliation loop a K8s Operator pattern alapja: az operator a kívánt és aktuális állapot különbségére reagál.
-- A `refreshInterval` trade-off: gyors frissítés vs Vault terhelés vs API rate limit. Túl rövid = sok terhelés, túl hosszú = lassan kerülnek a változások a podba.
-
 ## Slide: SecretStore példa
 
 - A `kubernetes` auth method oldja meg a secret zero problémát - a `serviceAccountRef` adja a JWT-t a Vault-nak.
@@ -218,6 +198,15 @@
 
 - A `refreshInterval: "15s"` csak a demo miatt rövid - prod-ban inkább `5m` vagy `15m`.
 - A `data:` szekció **átnevezést** is enged: a Vault-ban `db-password` néven lévő érték a K8s Secret-ben `password` néven jelenik meg.
+
+## Slide: Architektúra
+
+- A diagram végigköveti a folyamatot:
+  1. Vault-ban él a titok titkosítva.
+  2. Az ESO az API-n át lekéri.
+  3. K8s Secret-et hoz létre vagy frissít belőle.
+  4. A pod ezt a Secret-et mountolja.
+- A pod nem tud Vault-ról - ez biztonsági érv is, mert a hibafelület kisebb.
 
 ## Slide: A "Secret zero" probléma
 
@@ -249,26 +238,3 @@
   - 1. terminál: `kubectl logs -l app=demo-app -f`
   - 2. terminál: `kubectl exec ... vault kv put ...`
 - Ha jut idő: a Vault UI is bemutatható (`port-forward 8200`).
-
-## Időzítés - 3. rész
-
-- ~15-18 perc szekció (5-6 perc demo + 10-12 perc dia).
-- Ha csúszunk: az "Alternatív integrációk" táblázatot lehet átugrani.
-- Ha gyorsak vagyunk: a Vault UI-t is bemutathatjuk élőben.
-
-## Demo előtti checklist
-
-- [ ] `setup.sh` egyszer már lefutott helyben (vagy kéznél van)?
-- [ ] Két terminál nyitva, fontméret nagyra állítva?
-- [ ] `kind` és `helm` PATH-ban van?
-- [ ] Vault UI port-forward parancs előkészítve copy-paste-re?
-- [ ] Backup terv: ha valami nem megy, a `DEMO.pdf` screenshot-jai segítenek.
-
----
-
-## Teljes előadás időzítés
-
-- 1. rész (ConfigMap): ~10-12 perc
-- 2. rész (Secret): ~10 perc
-- 3. rész (ESO+Vault): ~15-18 perc
-- **Összesen: ~35-40 perc**

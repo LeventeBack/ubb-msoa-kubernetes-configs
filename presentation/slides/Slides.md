@@ -461,19 +461,6 @@ data:
 
 ---
 
-# Miért nem elég a natív Secret?
-
-A natív Secret hiányosságai éles környezetben:
-
-- **Nincs titkosítás** alapból (etcd plaintext)
-- **Nincs natív rotáció** - kézzel kell frissíteni
-- **Nincs részletes audit log** - ki olvasta, mikor?
-- **Multi-cluster fájdalom** - minden klaszterben külön
-- **GitOps probléma** - nem tehető Git-be
-- **Statikus credentialek** - nincs dinamikus, rövid életű hozzáférés
-
----
-
 # Mi az a külső secret manager?
 
 > **Egy mondat:** Dedikált, központi rendszer titkos adatok tárolására, hozzáférés-vezérlésére, naplózására és rotációjára.
@@ -487,6 +474,29 @@ Ismertebb példák:
 - **Azure Key Vault**
 - **GCP Secret Manager**
 - **Akeyless, CyberArk, IBM Cloud Secrets Manager**
+
+---
+
+# Felhasználási esetek
+
+<!-- _class: columns2 -->
+
+### Előnyös esetek:
+
+- Adatbázis jelszavak, API tokenek
+- TLS tanúsítványok
+- Cloud provider kulcsok (AWS, GCP)
+- **Dinamikus credentialek** (Vault egyik nagy ereje)
+- Multi-cluster / multi-cloud
+
+<br>
+<br>
+
+### Nem feltétlenül szükséges:
+
+- Egyszerű feature flagek (oda ConfigMap)
+- Lokális dev környezet
+- Olyan projekt, ahol nincs csapat üzemeltetni
 
 ---
 
@@ -514,44 +524,6 @@ Ismertebb példák:
   - **`SecretStore`** - kapcsolat a külső tárolóhoz
   - **`ExternalSecret`** - mit, honnan, hova szinkronizálni
 - A pod-od egy **sima K8s Secret-et** lát - transzparencia!
-
----
-
-![bg 75%](./img/architecture.png)
-
----
-
-# Előnyök / Hátrányok
-
-<!-- _class: columns2 -->
-
-### Előnyök:
-
-- Adatbázis jelszavak, API tokenek
-- TLS tanúsítványok
-- Cloud provider kulcsok (AWS, GCP)
-- **Dinamikus credentialek** (Vault egyik nagy ereje)
-- Multi-cluster / multi-cloud
-
-<br>
-<br>
-
-### Hátrányok (vagy túlzás):
-
-- Egyszerű feature flagek (oda ConfigMap)
-- Lokális dev környezet
-- Olyan projekt, ahol nincs csapat üzemeltetni
-
----
-
-# Hogyan működik belül?
-
-1. ESO operator a klaszterben fut, figyeli a CRD-ket
-2. **`SecretStore`** definiálja a kapcsolatot Vault felé
-   - URL, hitelesítés (K8s ServiceAccount JWT)
-3. **`ExternalSecret`** definiálja: melyik kulcsot, melyik K8s Secret-be
-4. Reconciliation loop: ESO `refreshInterval`-onként szinkronizál
-5. A Vault válasz alapján létrejön/frissül a K8s Secret
 
 ---
 
@@ -605,6 +577,10 @@ spec:
 
 ---
 
+![bg 75%](./img/architecture.png)
+
+---
+
 # A "Secret zero" probléma
 
 > **Mivel hitelesítünk a Vault felé? Ez maga is egy titok.**
@@ -645,6 +621,28 @@ spec:
 ```
 
 > **Az `ExternalSecret` ugyanaz marad!** Csak a `SecretStore` provider-blokk változik.
+
+---
+
+# Költség-haszon
+
+<!-- _class: columns2 -->
+
+### ESO + Vault előnyei:
+
+- Központosított titok-kezelés
+- Audit, rotáció, dinamikus credentialek
+- Vendor-független (provider váltható)
+
+<br>
+<br>
+
+### Hátrányai:
+
+- Plusz komponensek (Vault + ESO)
+- Plusz failure mode-ok
+- Tanulási görbe
+- Üzemeltetési overhead
 
 ---
 
@@ -695,39 +693,6 @@ spec:
 
 ---
 
-# Mikor mit használjunk?
-
-- **ConfigMap** - minden nem érzékeny konfigurációhoz
-- **Secret** - kis projektnél, vagy ha az ESO túlzás (pl. lokális dev)
-- **ESO + külső manager** - éles környezet, közepes-nagy klaszter, compliance
-
-> A három **nem alternatíva**, hanem **kiegészítő**.
-> Egy éles app jellemzően mindhármat használja egyszerre.
-
----
-
-# Költség-haszon
-
-<!-- _class: columns2 -->
-
-### ESO + Vault előnyei:
-
-- Központosított titok-kezelés
-- Audit, rotáció, dinamikus credentialek
-- Vendor-független (provider váltható)
-
-<br>
-<br>
-
-### Hátrányai:
-
-- Plusz komponensek (Vault + ESO)
-- Plusz failure mode-ok
-- Tanulási görbe
-- Üzemeltetési overhead
-
----
-
 # Tanulságok
 
 1. **Válaszd szét a kódot a konfigurációtól** - 12-factor alapelv
@@ -747,7 +712,7 @@ spec:
 - **The Twelve-Factor App:** [12factor.net](https://12factor.net/config)
 - **CNCF Cloud Native Landscape** - Secret Management kategória
 
-> **Demó forráskód publikus repón:** _(link a végén)_
+> **Demó forráskód:** [Publikus GitHub repository](https://github.com/LeventeBack/ubb-msoa-kubernetes-configs/)
 
 ---
 
