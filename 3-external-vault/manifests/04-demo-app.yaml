@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+    spec:
+      containers:
+        - name: app
+          image: busybox:1.36
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              while true; do
+                echo "=== $(date) ==="
+                echo "DB user:     $(cat /etc/secrets/username)"
+                echo "DB password: $(cat /etc/secrets/password)"
+                echo "API token:   $(cat /etc/secrets/api-token)"
+                echo ""
+                echo ""
+                sleep 5
+              done
+          volumeMounts:
+            - name: secrets
+              mountPath: /etc/secrets
+              readOnly: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: demo-app-credentials
