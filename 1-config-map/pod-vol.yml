@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod-vol
+spec:
+  containers:
+    - name: demo
+      image: alpine:3.19
+      imagePullPolicy: IfNotPresent
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - name: config-vol
+          mountPath: /etc/app-config
+  volumes:
+    - name: config-vol
+      configMap:
+        name: demo-config

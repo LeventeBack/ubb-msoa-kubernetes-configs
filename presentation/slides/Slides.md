@@ -122,7 +122,7 @@ Lazar Emanuel
 
 # Hogyan működik belül?
 
-1. ConfigMap **etcd-ben** tárolódik plaintext-ben
+1. ConfigMap **etcd** kulcs-érték tárban tárolódik, sima szövegként
 2. Pod létrehozásakor a **kubelet** lekéri a tartalmát
 3. A pod-ba **kétféleképpen** juthat el:
    - **Environment változó** - pod indulásakor egyszer (statikus)
@@ -208,7 +208,6 @@ spec:
 | **env változó**   | ❌         | `process.env.LOG_LEVEL`      | Statikus konfig  |
 | **envFrom**       | ❌         | Összes kulcs env-ként        | Sok érték együtt |
 | **volume mount**  | ✅         | `/etc/config/LOG_LEVEL` fájl | Dinamikus konfig |
-| **subPath mount** | ❌         | Egy fájl mountja             | Egyedi fájl      |
 
 ---
 
@@ -216,9 +215,8 @@ spec:
 
 - **Nincs titkosítás** - etcd-ben sima szöveg
 - **1 MiB** méretkorlát
-- `kubectl get configmap` mindenkinek látható, akinek RBAC joga van
+- `kubectl get configmap` mindenkinek látható, akinek joga van hozzáférni
 - **Immutable** flag (K8s 1.19+) - utána nem módosítható
-- Volume mount **subPath**-szal **nem** frissül automatikusan
 
 ---
 
@@ -227,7 +225,7 @@ spec:
 - **Helm values** - chart-szintű konfigurációkezelés
 - **Kustomize overlays** - környezet-specifikus felülírások
 - **External config providers** - pl. Spring Cloud Config
-- **CRD-alapú konfig** - saját Custom Resource-ok
+- **CRD-alapú konfig** - saját Custom Resource Definition-ök
 
 ---
 
