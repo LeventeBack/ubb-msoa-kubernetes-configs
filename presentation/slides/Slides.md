@@ -67,7 +67,7 @@ Lazar Emanuel
 
 # Mi az a ConfigMap?
 
-> **Egy mondat:** Namespace-scoped key-value tár nem érzékeny konfigurációhoz.
+> Namespace-scoped key-value tár nem érzékeny konfigurációhoz.
 
 <br>
 
@@ -203,11 +203,11 @@ spec:
 
 # Csatolási módok összehasonlítása
 
-| Mód               | Hot reload | Használat                    | Mire való        |
-| ----------------- | ---------- | ---------------------------- | ---------------- |
-| **env változó**   | ❌         | `process.env.LOG_LEVEL`      | Statikus konfig  |
-| **envFrom**       | ❌         | Összes kulcs env-ként        | Sok érték együtt |
-| **volume mount**  | ✅         | `/etc/config/LOG_LEVEL` fájl | Dinamikus konfig |
+| Mód              | Hot reload | Használat                    | Mire való        |
+| ---------------- | ---------- | ---------------------------- | ---------------- |
+| **env változó**  | ❌         | `process.env.LOG_LEVEL`      | Statikus konfig  |
+| **envFrom**      | ❌         | Összes kulcs env-ként        | Sok érték együtt |
+| **volume mount** | ✅         | `/etc/config/LOG_LEVEL` fájl | Dinamikus konfig |
 
 ---
 
@@ -262,7 +262,7 @@ spec:
 
 # Mi az a Secret?
 
-> **Egy mondat:** Namespace-scoped key-value tár érzékeny adatokhoz, base64-kódolva tárolva.
+> Namespace-scoped key-value tár érzékeny adatokhoz, base64-kódolva tárolva.
 
 <br>
 
@@ -461,7 +461,7 @@ data:
 
 # Mi az a külső secret manager?
 
-> **Egy mondat:** Dedikált, központi rendszer titkos adatok tárolására, hozzáférés-vezérlésére, naplózására és rotációjára.
+> Dedikált, központi rendszer titkos adatok tárolására, hozzáférés-vezérlésére, naplózására és rotációjára.
 
 <br>
 
@@ -521,7 +521,7 @@ Ismertebb példák:
 - Két fő Custom Resource:
   - **`SecretStore`** - kapcsolat a külső tárolóhoz
   - **`ExternalSecret`** - mit, honnan, hova szinkronizálni
-- A pod-od egy **sima K8s Secret-et** lát - transzparencia!
+- A pod-od egy **sima K8s Secret-et** lát
 
 ---
 
