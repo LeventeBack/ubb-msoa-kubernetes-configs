@@ -151,8 +151,8 @@ kind delete cluster --name external-secrets-demo
 
 ```bash
 kind get clusters
-kind get pods
-kind get pods -n external-secrets
+kubectl get pods
+kubectl get pods -n external-secrets
 ```
 
 ### Ellenőrzés a Vault-ban
