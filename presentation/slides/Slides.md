@@ -205,10 +205,10 @@ spec:
 
 | Mód               | Hot reload | Használat                    | Mire való        |
 | ----------------- | ---------- | ---------------------------- | ---------------- |
-| **env változó**   | Nem        | `process.env.LOG_LEVEL`      | Statikus konfig  |
-| **envFrom**       | Nem        | Összes kulcs env-ként        | Sok érték együtt |
-| **volume mount**  | Igen       | `/etc/config/LOG_LEVEL` fájl | Dinamikus konfig |
-| **subPath mount** | Nem        | Egy fájl mountja             | Egyedi fájl      |
+| **env változó**   | ❌         | `process.env.LOG_LEVEL`      | Statikus konfig  |
+| **envFrom**       | ❌         | Összes kulcs env-ként        | Sok érték együtt |
+| **volume mount**  | ✅         | `/etc/config/LOG_LEVEL` fájl | Dinamikus konfig |
+| **subPath mount** | ❌         | Egy fájl mountja             | Egyedi fájl      |
 
 ---
 
@@ -685,13 +685,13 @@ spec:
 
 | Szempont          | ConfigMap | Secret           | ESO + Vault |
 | ----------------- | --------- | ---------------- | ----------- |
-| **Érzékeny adat** | Nem       | Részben (base64) | Igen        |
-| **Titkosítás**    | Nem       | Részben (etcd)   | Igen        |
-| **Audit log**     | Nem       | Nem              | Igen        |
-| **Rotáció**       | manuális  | manuális         | Igen        |
-| **GitOps-barát**  | Igen      | Nem              | Igen        |
+| **Érzékeny adat** | ❌        | Részben (base64) | ✅          |
+| **Titkosítás**    | ❌        | Részben (etcd)   | ✅          |
+| **Audit log**     | ❌        | ❌               | ✅          |
+| **Rotáció**       | manuális  | manuális         | ✅          |
+| **GitOps-barát**  | ✅        | ❌               | ✅          |
 | **Komplexitás**   | alacsony  | alacsony         | közepes     |
-| **Multi-cluster** | Nem       | Nem              | Igen        |
+| **Multi-cluster** | ❌        | ❌               | ✅          |
 
 ---
 
